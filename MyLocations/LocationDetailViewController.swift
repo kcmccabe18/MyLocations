@@ -27,10 +27,25 @@ class LocationDetailsViewController: UITableViewController {
     var managedObjectContext: NSManagedObjectContext!
     
     var date = Date()
+    var locationToEdit: Location? {
+        didSet {
+            if let location = locationToEdit {
+                descriptionText = location.locationDescription
+                categoryName = location.category
+                date = location.date
+                coordinate = CLLocationCoordinate2DMake(location.latitude, location.longitude)
+                placemark = location.placemark
+            }
+        }
+    }
+    var descriptionText = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        descriptionTextView.text = ""
+        if let location = locationToEdit {
+            title = "Edit Location"
+        }
+        descriptionTextView.text = descriptionText
         categoryLabel.text = categoryName
         latitudeLabel.text = String(
             format: "%.8f",
@@ -54,12 +69,20 @@ class LocationDetailsViewController: UITableViewController {
     // MARK: - Actions
     
     @IBAction func done() {
+        // Gets a new location and has the HUD display updated with the checkmark
         guard let mainView = navigationController?.parent?.view
         else { return }
         let hudView = HudView.hud(inView: mainView, animated: true)
-        hudView.text = "Tagged"
-        // Create a new Location instatnce and fill in properties.
-        let location = Location(context: managedObjectContext)
+        
+        let location: Location
+        if let temp = locationToEdit {
+            hudView.text = "Updated"
+            location = temp
+        } else {
+            hudView.text = "Tagged"
+            location = Location(context: managedObjectContext)
+        }
+        // Fill in the locations properties.
         location.locationDescription = descriptionTextView.text
         location.category = categoryName
         location.latitude = coordinate.latitude
