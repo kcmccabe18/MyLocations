@@ -1,9 +1,3 @@
-//
-//  MapViewController.swift
-//  MyLocations
-//
-//  Created by Grogu on 2/12/22.
-//
 
 import UIKit
 import MapKit

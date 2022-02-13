@@ -1,10 +1,3 @@
-//
-//  Location+CoreDataProperties.swift
-//  MyLocations
-//
-//  Created by Grogu on 2/10/22.
-//
-//
 
 import Foundation
 import CoreData
@@ -23,6 +16,7 @@ extension Location {
     @NSManaged public var locationDescription: String
     @NSManaged public var category: String
     @NSManaged public var placemark: CLPlacemark?
+    @NSManaged public var photoID: NSNumber?
 
 }
 

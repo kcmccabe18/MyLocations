@@ -1,15 +1,10 @@
-//
-//  LocationCell.swift
-//  MyLocations
-//
-//  Created by Grogu on 2/12/22.
-//
 
 import UIKit
 
 class LocationCell: UITableViewCell {
     @IBOutlet var descriptionLabel: UILabel!
     @IBOutlet var addressLabel: UILabel!
+    @IBOutlet var photoImageView: UIImageView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -32,7 +27,7 @@ class LocationCell: UITableViewCell {
         if let placemark = location.placemark {
             var text = ""
             if let tmp = placemark.subThoroughfare {
-                text += tmp + ""
+                text += tmp + " "
             }
             if let tmp = placemark.thoroughfare {
                 text += tmp + ", "
@@ -47,6 +42,14 @@ class LocationCell: UITableViewCell {
                 location.latitude,
                 location.longitude)
         }
+        photoImageView.image = thumbnail(for: location)
+    }
+    
+    func thumbnail(for location: Location) -> UIImage {
+        if location.hasPhoto, let image = location.photoImage {
+            return image.resized(withBounds: CGSize(width: 52, height: 52))
+        }
+        return UIImage()
     }
 
 }
